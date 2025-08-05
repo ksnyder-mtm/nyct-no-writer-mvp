@@ -6,6 +6,7 @@ import GenerateButton from './components/GenerateButton';
 import OutputPanel from './components/OutputPanel';
 import MetricsPanel from './components/MetricsPanel';
 import { Upload, FileText, MessageSquare, Zap, BarChart3 } from 'lucide-react';
+import { API_URL } from './config';
 
 export interface ReasonCode {
   value: string;
@@ -41,7 +42,7 @@ function App() {
 
     setIsGenerating(true);
     try {
-      const response = await fetch('http://localhost:8000/generate', {
+      const response = await fetch(`${API_URL}/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

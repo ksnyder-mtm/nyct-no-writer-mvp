@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Upload, File, CheckCircle, AlertCircle, X } from 'lucide-react';
 import { UploadedFile } from '../App';
+import { API_URL } from '../config';
 
 interface FileUploadProps {
   onFileUploaded: (file: UploadedFile) => void;
@@ -66,7 +67,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded, uploadedFile })
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://localhost:8000/upload', {
+      const response = await fetch(`${API_URL}/upload`, {
         method: 'POST',
         body: formData,
       });

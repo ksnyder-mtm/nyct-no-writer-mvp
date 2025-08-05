@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, Clock, CheckCircle, Edit3, RefreshCw } from 'lucide-react';
+import { API_URL } from '../config';
 
 interface Metrics {
   avg_generation_time_ms: number;
@@ -19,7 +20,7 @@ const MetricsPanel: React.FC = () => {
   const fetchMetrics = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/metrics');
+      const response = await fetch(`${API_URL}/metrics`);
       if (response.ok) {
         const data = await response.json();
         setMetrics(data);

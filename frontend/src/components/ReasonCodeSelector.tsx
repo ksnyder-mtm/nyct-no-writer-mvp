@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
 import { ReasonCode } from '../App';
+import { API_URL } from '../config';
 
 interface ReasonCodeSelectorProps {
   selectedCode: string;
@@ -18,7 +19,7 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
 
   const fetchReasonCodes = async () => {
     try {
-      const response = await fetch('http://localhost:8000/reason-codes');
+      const response = await fetch(`${API_URL}/reason-codes`);
       if (response.ok) {
         const codes = await response.json();
         setReasonCodes(codes);
