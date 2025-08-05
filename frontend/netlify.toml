@@ -5,6 +5,8 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# API redirects - Update this when backend is deployed
+# Currently points to localhost for development
 [[redirects]]
   from = "/api/*"
   to = "http://localhost:8000/:splat"

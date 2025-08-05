@@ -23,7 +23,13 @@ The NYCT No-Writer MVP reduces time-to-decline from "weeks" to "minutes" by gene
 - **UI Components**: Radix UI primitives + Lucide icons
 - **Development**: Hot reload, CORS enabled
 
-## Quick Start
+## Live Demo
+
+🚀 **Production App**: https://nyct-no-writer-mvp.netlify.app
+
+The frontend is deployed and operational with mock AI responses for testing the complete workflow.
+
+## Quick Start (Local Development)
 
 ### Prerequisites
 - Node.js 18+ and npm
