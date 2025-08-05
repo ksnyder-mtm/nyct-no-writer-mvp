@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Download, CheckCircle, Clock, FileText, Mail } from 'lucide-react';
+import { Copy, Download, CheckCircle, Clock, FileText, Mail, Star, ThumbsUp } from 'lucide-react';
 import type { GeneratedOutput } from '../App';
 
 interface OutputPanelProps {
@@ -53,9 +53,20 @@ const OutputPanel: React.FC<OutputPanelProps> = ({ output }) => {
               <p className="text-sm text-slate-600">Professional decline communication ready</p>
             </div>
           </div>
-          <div className="flex items-center space-x-2 text-sm text-slate-500 bg-slate-50 px-3 py-2 rounded-lg">
-            <Clock className="h-4 w-4" />
-            <span className="font-medium">Generated in {formatGenerationTime(output.generation_time_ms)}</span>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 text-sm text-slate-500 bg-slate-50 px-3 py-2 rounded-lg">
+              <Clock className="h-4 w-4" />
+              <span className="font-medium">Generated in {formatGenerationTime(output.generation_time_ms)}</span>
+            </div>
+            <div className="flex items-center space-x-2 text-sm bg-gradient-to-r from-success-50 to-accent-50 text-success-700 px-3 py-2 rounded-lg border border-success-200">
+              <ThumbsUp className="h-4 w-4" />
+              <span className="font-medium">High Quality</span>
+              <div className="flex items-center space-x-1">
+                {[1,2,3,4,5].map(i => (
+                  <Star key={i} className="h-3 w-3 fill-current text-accent-500" />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

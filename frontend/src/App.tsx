@@ -5,7 +5,7 @@ import StaffNoteInput from './components/StaffNoteInput';
 import GenerateButton from './components/GenerateButton';
 import OutputPanel from './components/OutputPanel';
 import MetricsPanel from './components/MetricsPanel';
-import { Upload, FileText, MessageSquare, Zap, BarChart3 } from 'lucide-react';
+import { Upload, FileText, MessageSquare, Zap, BarChart3, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
 
 export interface ReasonCode {
   value: string;
@@ -88,31 +88,40 @@ NYCT Program Team`,
     setGeneratedOutput(null);
   };
 
+  // Calculate progress
+  const progress = [
+    uploadedFile ? 1 : 0,
+    selectedReasonCode ? 1 : 0,
+    staffNote.trim() ? 1 : 0,
+    generatedOutput ? 1 : 0
+  ].reduce((sum, val) => sum + val, 0);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-primary-50/30">
-      {/* Header */}
-      <header className="bg-white/95 backdrop-blur-sm shadow-soft border-b border-slate-200/60">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
+      {/* Modern Header */}
+      <header className="bg-white/90 backdrop-blur-xl shadow-lg border-b border-slate-200/50 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+          <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary-600 to-accent-500 opacity-20 blur"></div>
-                <div className="relative bg-primary-500 p-2 rounded-lg">
-                  <FileText className="h-7 w-7 text-white" />
+                <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 opacity-20 blur-lg"></div>
+                <div className="relative bg-gradient-to-br from-blue-500 to-indigo-600 p-3 rounded-2xl shadow-lg">
+                  <FileText className="h-8 w-8 text-white" />
                 </div>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
                   NYCT No-Writer
                 </h1>
-                <p className="text-sm text-slate-600 font-medium">
-                  Intelligent Decline Rationale Generator
+                <p className="text-slate-600 font-medium flex items-center">
+                  <Sparkles className="h-4 w-4 mr-1.5 text-amber-500" />
+                  AI-Powered Proposal Review Assistant
                 </p>
               </div>
             </div>
             <button
               onClick={() => setShowMetrics(!showMetrics)}
-              className="flex items-center space-x-2 px-4 py-2.5 text-sm font-medium text-slate-700 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-lg hover:bg-white hover:border-slate-300 hover:shadow-card transition-all duration-200"
+              className="flex items-center space-x-2 px-6 py-3 text-sm font-medium text-slate-700 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl hover:bg-white hover:border-slate-300 hover:shadow-lg transition-all duration-200"
             >
               <BarChart3 className="h-4 w-4" />
               <span>Analytics</span>
@@ -122,34 +131,83 @@ NYCT Program Team`,
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Progress Bar */}
+        <div className="mb-10">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-slate-200/50">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-slate-900">Progress</h3>
+              <span className="text-sm font-medium text-slate-600">{progress}/4 steps completed</span>
+            </div>
+            <div className="w-full bg-slate-200 rounded-full h-3 mb-4">
+              <div 
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${(progress / 4) * 100}%` }}
+              />
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+              {[
+                { icon: Upload, label: 'Upload', completed: !!uploadedFile },
+                { icon: MessageSquare, label: 'Reason', completed: !!selectedReasonCode },
+                { icon: FileText, label: 'Notes', completed: !!staffNote.trim() },
+                { icon: Zap, label: 'Generate', completed: !!generatedOutput }
+              ].map((step) => (
+                <div key={step.label} className={`flex items-center space-x-2 p-3 rounded-xl transition-all duration-300 ${
+                  step.completed ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'
+                }`}>
+                  {step.completed ? (
+                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  ) : (
+                    <step.icon className="h-5 w-5" />
+                  )}
+                  <span className="font-medium text-sm">{step.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {showMetrics && (
           <div className="mb-8 animate-slide-up">
             <MetricsPanel />
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
           {/* Input Panel */}
           <div className="space-y-6">
-            {/* Step indicator for better UX flow */}
-            <div className="mb-6">
-              <div className="flex items-center space-x-2 text-sm text-slate-600">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-                  Step-by-Step Process
-                </span>
+            {/* Welcome Card */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100/50 shadow-lg">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="p-3 bg-white rounded-xl shadow-sm">
+                  <Sparkles className="h-7 w-7 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-900">AI-Powered Decline Assistant</h2>
+                  <p className="text-slate-600">Professional rationales in 30 seconds</p>
+                </div>
               </div>
+              <p className="text-slate-700 leading-relaxed">
+                Transform proposal reviews into professional decline communications with AI assistance. 
+                Generate board-ready rationales and courteous applicant replies that maintain NYCT's 
+                professional standards while saving hours of writing time.
+              </p>
             </div>
 
             {/* Step 1: Upload */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-card border border-slate-200/60 p-6 hover:shadow-elevated transition-all duration-300">
-              <div className="flex items-center mb-4">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-100 text-primary-600 text-sm font-semibold mr-3">
-                  1
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 p-8 hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center mb-6">
+                <div className={`flex items-center justify-center w-10 h-10 rounded-full mr-4 transition-colors duration-300 ${
+                  uploadedFile ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'
+                }`}>
+                  {uploadedFile ? <CheckCircle2 className="h-6 w-6" /> : <span className="text-lg font-bold">1</span>}
                 </div>
-                <h2 className="text-lg font-semibold text-slate-900 flex items-center">
-                  <Upload className="h-5 w-5 mr-2 text-primary-600" />
-                  Upload Proposal
-                </h2>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 flex items-center">
+                    <Upload className="h-6 w-6 mr-2 text-blue-600" />
+                    Upload Proposal Document
+                  </h3>
+                  <p className="text-slate-600">PDF or Word documents up to 10MB</p>
+                </div>
               </div>
               <FileUpload
                 onFileUploaded={setUploadedFile}
@@ -158,15 +216,21 @@ NYCT Program Team`,
             </div>
 
             {/* Step 2: Reason */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-card border border-slate-200/60 p-6 hover:shadow-elevated transition-all duration-300">
-              <div className="flex items-center mb-4">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-100 text-primary-600 text-sm font-semibold mr-3">
-                  2
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 p-8 hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center mb-6">
+                <div className={`flex items-center justify-center w-10 h-10 rounded-full mr-4 transition-colors duration-300 ${
+                  selectedReasonCode ? 'bg-green-100 text-green-600' : 
+                  uploadedFile ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-400'
+                }`}>
+                  {selectedReasonCode ? <CheckCircle2 className="h-6 w-6" /> : <span className="text-lg font-bold">2</span>}
                 </div>
-                <h2 className="text-lg font-semibold text-slate-900 flex items-center">
-                  <MessageSquare className="h-5 w-5 mr-2 text-primary-600" />
-                  Select Decline Reason
-                </h2>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 flex items-center">
+                    <MessageSquare className="h-6 w-6 mr-2 text-blue-600" />
+                    Select Decline Reason
+                  </h3>
+                  <p className="text-slate-600">Choose from 8 board-reportable NYCT decline codes</p>
+                </div>
               </div>
               <ReasonCodeSelector
                 selectedCode={selectedReasonCode}
@@ -175,14 +239,18 @@ NYCT Program Team`,
             </div>
 
             {/* Step 3: Staff Note */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-card border border-slate-200/60 p-6 hover:shadow-elevated transition-all duration-300">
-              <div className="flex items-center mb-4">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-100 text-primary-600 text-sm font-semibold mr-3">
-                  3
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 p-8 hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center mb-6">
+                <div className={`flex items-center justify-center w-10 h-10 rounded-full mr-4 transition-colors duration-300 ${
+                  staffNote.trim() ? 'bg-green-100 text-green-600' : 
+                  selectedReasonCode ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-400'
+                }`}>
+                  {staffNote.trim() ? <CheckCircle2 className="h-6 w-6" /> : <span className="text-lg font-bold">3</span>}
                 </div>
-                <h2 className="text-lg font-semibold text-slate-900">
-                  Add Staff Note
-                </h2>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900">Staff Context Notes</h3>
+                  <p className="text-slate-600">Brief context to personalize the AI-generated rationale</p>
+                </div>
               </div>
               <StaffNoteInput
                 value={staffNote}
@@ -191,54 +259,49 @@ NYCT Program Team`,
             </div>
 
             {/* Generate Button */}
-            <div className="pt-4">
+            <div className="space-y-4">
               <GenerateButton
                 onClick={handleGenerate}
                 isGenerating={isGenerating}
                 disabled={!uploadedFile || !selectedReasonCode || !staffNote.trim()}
               />
-            </div>
 
-            {generatedOutput && (
-              <button
-                onClick={resetForm}
-                className="w-full px-4 py-3 text-sm font-medium text-slate-700 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-lg hover:bg-white hover:border-slate-300 hover:shadow-card transition-all duration-200"
-              >
-                Start New Decline Process
-              </button>
-            )}
+              {generatedOutput && (
+                <button
+                  onClick={resetForm}
+                  className="w-full px-6 py-3 text-sm font-medium text-slate-700 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl hover:bg-white hover:border-slate-300 hover:shadow-lg transition-all duration-200"
+                >
+                  <ArrowRight className="h-4 w-4 mr-2 inline" />
+                  Start New Decline Process
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Output Panel */}
           <div className="space-y-6">
             {generatedOutput ? (
-              <div className="animate-slide-up">
-                <OutputPanel output={generatedOutput} />
-              </div>
+              <OutputPanel output={generatedOutput} />
             ) : (
-              <div className="bg-white/60 backdrop-blur-sm rounded-xl shadow-card border border-slate-200/60 p-8">
-                <div className="text-center py-12">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 p-12">
+                <div className="text-center">
                   <div className="relative mb-6">
-                    <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-primary-600/20 to-accent-500/20 blur"></div>
-                    <div className="relative bg-gradient-to-r from-primary-100 to-accent-100 p-4 rounded-full w-fit mx-auto">
-                      <Zap className="h-8 w-8 text-primary-600" />
+                    <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 opacity-20 blur-lg"></div>
+                    <div className="relative bg-gradient-to-br from-blue-500 to-indigo-600 p-6 rounded-full mx-auto w-24 h-24 flex items-center justify-center">
+                      <Zap className="h-12 w-12 text-white" />
                     </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                    Ready to Generate
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                    Ready to Generate Professional Rationales
                   </h3>
-                  <p className="text-slate-600 max-w-sm mx-auto leading-relaxed">
-                    Complete all three steps on the left and click "Generate" to create professional decline rationales in seconds.
+                  <p className="text-slate-600 leading-relaxed max-w-md mx-auto">
+                    Complete the three steps on the left, then click "Generate" to create both 
+                    internal board documentation and external applicant communication.
                   </p>
-                  <div className="mt-6 flex items-center justify-center space-x-4 text-sm text-slate-500">
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-primary-400 rounded-full mr-2"></div>
-                      <span>AI-powered</span>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-accent-400 rounded-full mr-2"></div>
-                      <span>Professional tone</span>
-                    </div>
+                  <div className="mt-8 p-4 bg-amber-50 rounded-xl border border-amber-200">
+                    <p className="text-amber-800 text-sm font-medium">
+                      💡 Pro tip: Be specific in your staff notes for more personalized results
+                    </p>
                   </div>
                 </div>
               </div>

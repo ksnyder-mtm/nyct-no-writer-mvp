@@ -57,6 +57,17 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setIsOpen(true);
+          } else if (e.key === 'Escape') {
+            setIsOpen(false);
+          }
+        }}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        aria-label="Select decline reason"
         className={`
           relative w-full cursor-pointer rounded-lg border bg-white/80 backdrop-blur-sm py-3.5 pl-4 pr-12 text-left shadow-card transition-all duration-200
           focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 hover:shadow-elevated hover:bg-white
@@ -82,14 +93,27 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
       </button>
 
       {isOpen && (
-        <div className="absolute z-20 mt-2 w-full rounded-xl bg-white shadow-elevated border border-slate-200 animate-slide-up">
-          <ul className="max-h-64 overflow-auto rounded-xl py-2 text-base focus:outline-none">
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 z-10" 
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="absolute z-20 mt-2 w-full rounded-xl bg-white/95 backdrop-blur-sm shadow-elevated border border-slate-200 animate-slide-up">
+            <ul 
+              role="listbox" 
+              aria-label="Decline reason options"
+              className="max-h-64 overflow-auto rounded-xl py-2 text-base focus:outline-none"
+            >
             {reasonCodes.map((code) => (
               <li
                 key={code.value}
+                role="option"
+                aria-selected={selectedCode === code.value}
+                tabIndex={0}
                 className={`
                   relative cursor-pointer select-none py-3 pl-4 pr-12 mx-2 rounded-lg transition-all duration-150
-                  hover:bg-primary-50 hover:text-primary-900
+                  hover:bg-primary-50 hover:text-primary-900 focus:bg-primary-50 focus:text-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500/20
                   ${selectedCode === code.value 
                     ? 'bg-primary-100 text-primary-900 font-semibold' 
                     : 'text-slate-900 hover:bg-slate-50'
@@ -98,6 +122,15 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
                 onClick={() => {
                   onCodeSelect(code.value);
                   setIsOpen(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onCodeSelect(code.value);
+                    setIsOpen(false);
+                  } else if (e.key === 'Escape') {
+                    setIsOpen(false);
+                  }
                 }}
               >
                 <div className="flex items-start">
@@ -116,8 +149,9 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
                 </div>
               </li>
             ))}
-          </ul>
-        </div>
+            </ul>
+          </div>
+        </>
       )}
     </div>
   );
