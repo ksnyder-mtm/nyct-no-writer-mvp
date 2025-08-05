@@ -5,7 +5,7 @@ import StaffNoteInput from './components/StaffNoteInput';
 import GenerateButton from './components/GenerateButton';
 import OutputPanel from './components/OutputPanel';
 import MetricsPanel from './components/MetricsPanel';
-import { Upload, FileText, MessageSquare, Zap, BarChart3, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
+import { Upload, FileText, MessageSquare, Zap, BarChart3, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export interface ReasonCode {
   value: string;
@@ -88,40 +88,41 @@ NYCT Program Team`,
     setGeneratedOutput(null);
   };
 
-  // Calculate progress
-  const progress = [
-    uploadedFile ? 1 : 0,
-    selectedReasonCode ? 1 : 0,
-    staffNote.trim() ? 1 : 0,
-    generatedOutput ? 1 : 0
-  ].reduce((sum, val) => sum + val, 0);
+  // Calculate current step based on completed fields
+  const getProgressStep = () => {
+    if (!uploadedFile) return 1;
+    if (!selectedReasonCode) return 2;
+    if (!staffNote.trim()) return 3;
+    if (!generatedOutput) return 4;
+    return 5;
+  };
+
+  const progressStep = getProgressStep();
+  const steps = [
+    { id: 1, title: 'Upload Document', icon: Upload, completed: !!uploadedFile },
+    { id: 2, title: 'Select Reason', icon: MessageSquare, completed: !!selectedReasonCode },
+    { id: 3, title: 'Add Notes', icon: FileText, completed: !!staffNote.trim() },
+    { id: 4, title: 'Generate', icon: Zap, completed: !!generatedOutput }
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
-      {/* Modern Header */}
-      <header className="bg-white/90 backdrop-blur-xl shadow-lg border-b border-slate-200/50 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 opacity-20 blur-lg"></div>
-                <div className="relative bg-gradient-to-br from-blue-500 to-indigo-600 p-3 rounded-2xl shadow-lg">
-                  <FileText className="h-8 w-8 text-white" />
-                </div>
+    <div className="min-h-screen bg-slate-50">
+      {/* Simplified Header */}
+      <header className="bg-white shadow-sm border-b sticky top-0 z-40">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-4 sm:py-6 space-y-3 sm:space-y-0">
+            <div className="flex items-center space-x-3">
+              <div className="bg-blue-600 p-2 rounded-lg">
+                <FileText className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                  NYCT No-Writer
-                </h1>
-                <p className="text-slate-600 font-medium flex items-center">
-                  <Sparkles className="h-4 w-4 mr-1.5 text-amber-500" />
-                  AI-Powered Proposal Review Assistant
-                </p>
+                <h1 className="text-2xl font-bold text-slate-900">NYCT No-Writer</h1>
+                <p className="text-slate-600 text-sm">AI-Powered Proposal Review Assistant</p>
               </div>
             </div>
             <button
               onClick={() => setShowMetrics(!showMetrics)}
-              className="flex items-center space-x-2 px-6 py-3 text-sm font-medium text-slate-700 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl hover:bg-white hover:border-slate-300 hover:shadow-lg transition-all duration-200"
+              className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
             >
               <BarChart3 className="h-4 w-4" />
               <span>Analytics</span>
@@ -130,183 +131,175 @@ NYCT Program Team`,
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Progress Bar */}
-        <div className="mb-10">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-slate-200/50">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-slate-900">Progress</h3>
-              <span className="text-sm font-medium text-slate-600">{progress}/4 steps completed</span>
-            </div>
-            <div className="w-full bg-slate-200 rounded-full h-3 mb-4">
-              <div 
-                className="bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full transition-all duration-700 ease-out"
-                style={{ width: `${(progress / 4) * 100}%` }}
-              />
-            </div>
-            <div className="grid grid-cols-4 gap-4">
-              {[
-                { icon: Upload, label: 'Upload', completed: !!uploadedFile },
-                { icon: MessageSquare, label: 'Reason', completed: !!selectedReasonCode },
-                { icon: FileText, label: 'Notes', completed: !!staffNote.trim() },
-                { icon: Zap, label: 'Generate', completed: !!generatedOutput }
-              ].map((step) => (
-                <div key={step.label} className={`flex items-center space-x-2 p-3 rounded-xl transition-all duration-300 ${
-                  step.completed ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'
-                }`}>
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Step Progress Indicator */}
+        <div className="mb-6 sm:mb-8" role="navigation" aria-label="Progress indicator">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
+            <h2 className="text-lg font-semibold text-slate-900">
+              Step {progressStep} of {steps.length}
+            </h2>
+            <span className="text-sm text-slate-600" aria-live="polite">
+              {Math.round((steps.filter(s => s.completed).length / steps.length) * 100)}% Complete
+            </span>
+          </div>
+          
+          <div className="flex items-center space-x-1 sm:space-x-2 mb-6 overflow-x-auto pb-2">
+            {steps.map((step, index) => (
+              <div key={step.id} className="flex items-center flex-1 min-w-0">
+                <div 
+                  className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-200 flex-shrink-0 ${
+                    step.completed 
+                      ? 'bg-green-100 border-green-500 text-green-600'
+                      : progressStep === step.id
+                      ? 'bg-blue-100 border-blue-500 text-blue-600'
+                      : 'bg-slate-100 border-slate-300 text-slate-400'
+                  }`}
+                  role="progressbar"
+                  aria-valuenow={step.completed ? 100 : progressStep === step.id ? 50 : 0}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={`${step.title} ${step.completed ? 'completed' : progressStep === step.id ? 'in progress' : 'not started'}`}
+                >
                   {step.completed ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
                   ) : (
-                    <step.icon className="h-5 w-5" />
+                    <span className="text-xs sm:text-sm font-semibold">{step.id}</span>
                   )}
-                  <span className="font-medium text-sm">{step.label}</span>
                 </div>
-              ))}
-            </div>
+                {index < steps.length - 1 && (
+                  <div className={`flex-1 h-0.5 mx-1 sm:mx-2 transition-colors duration-200 min-w-4 ${
+                    step.completed ? 'bg-green-500' : 'bg-slate-300'
+                  }`} />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">
+              {progressStep <= 4 ? steps[progressStep - 1].title : 'Complete'}
+            </h3>
+            <p className="text-sm sm:text-base text-slate-600">
+              {progressStep === 1 && 'Upload your proposal document to get started'}
+              {progressStep === 2 && 'Select the reason for declining this proposal'}
+              {progressStep === 3 && 'Add context notes to personalize the response'}
+              {progressStep === 4 && 'Generate professional decline documentation'}
+              {progressStep === 5 && 'Review and use your generated rationale'}
+            </p>
           </div>
         </div>
 
         {showMetrics && (
-          <div className="mb-8 animate-slide-up">
+          <div className="mb-8">
             <MetricsPanel />
           </div>
         )}
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          {/* Input Panel */}
-          <div className="space-y-6">
-            {/* Welcome Card */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100/50 shadow-lg">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="p-3 bg-white rounded-xl shadow-sm">
-                  <Sparkles className="h-7 w-7 text-blue-600" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-900">AI-Powered Decline Assistant</h2>
-                  <p className="text-slate-600">Professional rationales in 30 seconds</p>
-                </div>
-              </div>
-              <p className="text-slate-700 leading-relaxed">
-                Transform proposal reviews into professional decline communications with AI assistance. 
-                Generate board-ready rationales and courteous applicant replies that maintain NYCT's 
-                professional standards while saving hours of writing time.
-              </p>
-            </div>
-
-            {/* Step 1: Upload */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 p-8 hover:shadow-xl transition-all duration-300">
-              <div className="flex items-center mb-6">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full mr-4 transition-colors duration-300 ${
-                  uploadedFile ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'
-                }`}>
-                  {uploadedFile ? <CheckCircle2 className="h-6 w-6" /> : <span className="text-lg font-bold">1</span>}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900 flex items-center">
-                    <Upload className="h-6 w-6 mr-2 text-blue-600" />
-                    Upload Proposal Document
-                  </h3>
-                  <p className="text-slate-600">PDF or Word documents up to 10MB</p>
-                </div>
+        {/* Single Column Content */}
+        <div className="space-y-6 sm:space-y-8">
+          {/* Step 1: Upload */}
+          {progressStep >= 1 && (
+            <section 
+              className={`bg-white rounded-xl shadow-sm border p-4 sm:p-6 transition-all duration-300 ${
+                progressStep === 1 ? 'ring-2 ring-blue-500 ring-opacity-20' : ''
+              }`}
+              aria-labelledby="upload-heading"
+            >
+              <div className="flex items-center mb-4">
+                <Upload className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
+                <h3 id="upload-heading" className="text-base sm:text-lg font-semibold text-slate-900">Upload Proposal Document</h3>
+                {uploadedFile && <CheckCircle2 className="h-5 w-5 text-green-600 ml-auto flex-shrink-0" />}
               </div>
               <FileUpload
                 onFileUploaded={setUploadedFile}
                 uploadedFile={uploadedFile}
               />
-            </div>
+            </section>
+          )}
 
-            {/* Step 2: Reason */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 p-8 hover:shadow-xl transition-all duration-300">
-              <div className="flex items-center mb-6">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full mr-4 transition-colors duration-300 ${
-                  selectedReasonCode ? 'bg-green-100 text-green-600' : 
-                  uploadedFile ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-400'
-                }`}>
-                  {selectedReasonCode ? <CheckCircle2 className="h-6 w-6" /> : <span className="text-lg font-bold">2</span>}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900 flex items-center">
-                    <MessageSquare className="h-6 w-6 mr-2 text-blue-600" />
-                    Select Decline Reason
-                  </h3>
-                  <p className="text-slate-600">Choose from 8 board-reportable NYCT decline codes</p>
-                </div>
+          {/* Step 2: Reason */}
+          {progressStep >= 2 && (
+            <section 
+              className={`bg-white rounded-xl shadow-sm border p-4 sm:p-6 transition-all duration-300 ${
+                progressStep === 2 ? 'ring-2 ring-blue-500 ring-opacity-20' : ''
+              }`}
+              aria-labelledby="reason-heading"
+            >
+              <div className="flex items-center mb-4">
+                <MessageSquare className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
+                <h3 id="reason-heading" className="text-base sm:text-lg font-semibold text-slate-900">Select Decline Reason</h3>
+                {selectedReasonCode && <CheckCircle2 className="h-5 w-5 text-green-600 ml-auto flex-shrink-0" />}
               </div>
               <ReasonCodeSelector
                 selectedCode={selectedReasonCode}
                 onCodeSelect={setSelectedReasonCode}
               />
-            </div>
+            </section>
+          )}
 
-            {/* Step 3: Staff Note */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 p-8 hover:shadow-xl transition-all duration-300">
-              <div className="flex items-center mb-6">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full mr-4 transition-colors duration-300 ${
-                  staffNote.trim() ? 'bg-green-100 text-green-600' : 
-                  selectedReasonCode ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-400'
-                }`}>
-                  {staffNote.trim() ? <CheckCircle2 className="h-6 w-6" /> : <span className="text-lg font-bold">3</span>}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">Staff Context Notes</h3>
-                  <p className="text-slate-600">Brief context to personalize the AI-generated rationale</p>
-                </div>
+          {/* Step 3: Staff Notes */}
+          {progressStep >= 3 && (
+            <section 
+              className={`bg-white rounded-xl shadow-sm border p-4 sm:p-6 transition-all duration-300 ${
+                progressStep === 3 ? 'ring-2 ring-blue-500 ring-opacity-20' : ''
+              }`}
+              aria-labelledby="notes-heading"
+            >
+              <div className="flex items-center mb-4">
+                <FileText className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
+                <h3 id="notes-heading" className="text-base sm:text-lg font-semibold text-slate-900">Staff Context Notes</h3>
+                {staffNote.trim() && <CheckCircle2 className="h-5 w-5 text-green-600 ml-auto flex-shrink-0" />}
               </div>
               <StaffNoteInput
                 value={staffNote}
                 onChange={setStaffNote}
               />
-            </div>
+            </section>
+          )}
 
-            {/* Generate Button */}
-            <div className="space-y-4">
+          {/* Step 4: Generate */}
+          {progressStep >= 4 && (
+            <section 
+              className={`bg-white rounded-xl shadow-sm border p-4 sm:p-6 transition-all duration-300 ${
+                progressStep === 4 ? 'ring-2 ring-blue-500 ring-opacity-20' : ''
+              }`}
+              aria-labelledby="generate-heading"
+            >
+              <div className="flex items-center mb-6">
+                <Zap className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
+                <h3 id="generate-heading" className="text-base sm:text-lg font-semibold text-slate-900">Generate Rationale</h3>
+              </div>
               <GenerateButton
                 onClick={handleGenerate}
                 isGenerating={isGenerating}
                 disabled={!uploadedFile || !selectedReasonCode || !staffNote.trim()}
               />
+            </section>
+          )}
 
-              {generatedOutput && (
+          {/* Output */}
+          {generatedOutput && (
+            <section 
+              className="bg-white rounded-xl shadow-sm border p-4 sm:p-6"
+              aria-labelledby="output-heading"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
+                <div className="flex items-center">
+                  <CheckCircle2 className="h-5 w-5 text-green-600 mr-2 flex-shrink-0" />
+                  <h3 id="output-heading" className="text-base sm:text-lg font-semibold text-slate-900">Generated Rationale</h3>
+                </div>
                 <button
                   onClick={resetForm}
-                  className="w-full px-6 py-3 text-sm font-medium text-slate-700 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl hover:bg-white hover:border-slate-300 hover:shadow-lg transition-all duration-200"
+                  className="flex items-center justify-center space-x-2 px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors min-h-[44px]"
+                  aria-label="Start a new decline process"
                 >
-                  <ArrowRight className="h-4 w-4 mr-2 inline" />
-                  Start New Decline Process
+                  <ArrowRight className="h-4 w-4" />
+                  <span>Start New Process</span>
                 </button>
-              )}
-            </div>
-          </div>
-
-          {/* Output Panel */}
-          <div className="space-y-6">
-            {generatedOutput ? (
-              <OutputPanel output={generatedOutput} />
-            ) : (
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 p-12">
-                <div className="text-center">
-                  <div className="relative mb-6">
-                    <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 opacity-20 blur-lg"></div>
-                    <div className="relative bg-gradient-to-br from-blue-500 to-indigo-600 p-6 rounded-full mx-auto w-24 h-24 flex items-center justify-center">
-                      <Zap className="h-12 w-12 text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    Ready to Generate Professional Rationales
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed max-w-md mx-auto">
-                    Complete the three steps on the left, then click "Generate" to create both 
-                    internal board documentation and external applicant communication.
-                  </p>
-                  <div className="mt-8 p-4 bg-amber-50 rounded-xl border border-amber-200">
-                    <p className="text-amber-800 text-sm font-medium">
-                      💡 Pro tip: Be specific in your staff notes for more personalized results
-                    </p>
-                  </div>
-                </div>
               </div>
-            )}
-          </div>
+              <OutputPanel output={generatedOutput} />
+            </section>
+          )}
         </div>
       </main>
     </div>
