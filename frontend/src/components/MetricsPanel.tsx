@@ -109,24 +109,32 @@ const MetricsPanel: React.FC = () => {
 
   const getColorClasses = (color: string) => {
     const colors = {
-      blue: 'text-blue-600 bg-blue-100',
-      green: 'text-green-600 bg-green-100',
-      purple: 'text-purple-600 bg-purple-100',
-      orange: 'text-orange-600 bg-orange-100'
+      blue: 'text-primary-700 bg-primary-100',
+      green: 'text-success-700 bg-success-100',
+      purple: 'text-primary-800 bg-primary-200',
+      orange: 'text-accent-700 bg-accent-100'
     };
     return colors[color as keyof typeof colors] || colors.blue;
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Usage Metrics</h3>
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-elevated border border-slate-200/60 p-6">
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center space-x-3">
+          <div className="bg-gradient-to-r from-primary-100 to-accent-100 p-2 rounded-lg">
+            <TrendingUp className="h-5 w-5 text-primary-600" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900">Usage Analytics</h3>
+            <p className="text-sm text-slate-600">Performance insights and trends</p>
+          </div>
+        </div>
         <button
           onClick={fetchMetrics}
-          className="inline-flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md transition-colors"
+          className="inline-flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-200 hover:scale-105"
         >
           <RefreshCw className="h-4 w-4" />
-          <span>Refresh</span>
+          <span>Refresh Data</span>
         </button>
       </div>
 
@@ -134,27 +142,41 @@ const MetricsPanel: React.FC = () => {
         {metricCards.map((metric, index) => {
           const IconComponent = metric.icon;
           return (
-            <div key={index} className="relative overflow-hidden rounded-lg border border-gray-200 p-4">
-              <div className="flex items-center">
-                <div className={`rounded-lg p-2 ${getColorClasses(metric.color)}`}>
-                  <IconComponent className="h-5 w-5" />
+            <div key={index} className="relative overflow-hidden rounded-xl border border-slate-200 p-6 bg-gradient-to-br from-white to-slate-50/50 hover:shadow-card transition-all duration-300 group">
+              <div className="flex items-start justify-between mb-4">
+                <div className={`rounded-xl p-3 ${getColorClasses(metric.color)} group-hover:scale-110 transition-transform duration-300`}>
+                  <IconComponent className="h-6 w-6" />
                 </div>
-                <div className="ml-4 flex-1">
-                  <p className="text-sm font-medium text-gray-600">{metric.title}</p>
-                  <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-slate-900 mb-1">{metric.value}</p>
+                  <p className="text-xs font-medium text-slate-600">{metric.title}</p>
                 </div>
               </div>
-              <p className="mt-2 text-xs text-gray-500">{metric.description}</p>
+              <div className="border-t border-slate-100 pt-3">
+                <p className="text-xs text-slate-500 leading-relaxed">{metric.description}</p>
+              </div>
+              
+              {/* Subtle background pattern */}
+              <div className="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 opacity-5">
+                <IconComponent className="w-full h-full" />
+              </div>
             </div>
           );
         })}
       </div>
 
-      <div className="mt-6 text-sm text-gray-500">
-        <p>
-          <strong>Success metric target:</strong> Reduce average "time-to-rationale" per decline 
-          from multiple weeks to &lt;15 minutes within pilot team.
-        </p>
+      <div className="mt-8 bg-gradient-to-r from-primary-50/50 to-accent-50/50 border border-primary-100 rounded-xl p-4">
+        <div className="flex items-start space-x-3">
+          <div className="bg-primary-100 p-2 rounded-lg flex-shrink-0">
+            <div className="w-4 h-4 bg-primary-500 rounded-full"></div>
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold text-slate-900 mb-1">Success Target</h4>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Reduce average time-to-rationale per decline from multiple weeks to under 15 minutes within the pilot team, while maintaining quality and consistency in communication.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

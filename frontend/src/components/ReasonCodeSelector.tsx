@@ -47,7 +47,7 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
   if (loading) {
     return (
       <div className="animate-pulse">
-        <div className="h-12 bg-gray-200 rounded-md"></div>
+        <div className="h-12 bg-slate-200 rounded-lg"></div>
       </div>
     );
   }
@@ -58,52 +58,62 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          relative w-full cursor-pointer rounded-md border bg-white py-3 pl-3 pr-10 text-left shadow-sm
-          focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500
-          ${selectedCode ? 'border-gray-300' : 'border-red-300'}
+          relative w-full cursor-pointer rounded-lg border bg-white/80 backdrop-blur-sm py-3.5 pl-4 pr-12 text-left shadow-card transition-all duration-200
+          focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 hover:shadow-elevated hover:bg-white
+          ${selectedCode ? 'border-slate-300' : 'border-warning-300 bg-warning-50/50'}
         `}
       >
         <span className="block truncate">
           {selectedReasonCode ? (
-            <span className="text-gray-900">
+            <span className="text-slate-900 font-medium">
               {selectedReasonCode.label}
             </span>
           ) : (
-            <span className="text-gray-500">Select a decline reason...</span>
+            <span className="text-slate-500 font-medium">Select a decline reason...</span>
           )}
         </span>
-        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
           <ChevronDown
-            className={`h-5 w-5 text-gray-400 transition-transform ${
-              isOpen ? 'rotate-180' : ''
+            className={`h-5 w-5 text-slate-400 transition-all duration-200 ${
+              isOpen ? 'rotate-180 text-primary-500' : ''
             }`}
           />
         </span>
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-full rounded-md bg-white shadow-lg">
-          <ul className="max-h-60 overflow-auto rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div className="absolute z-20 mt-2 w-full rounded-xl bg-white shadow-elevated border border-slate-200 animate-slide-up">
+          <ul className="max-h-64 overflow-auto rounded-xl py-2 text-base focus:outline-none">
             {reasonCodes.map((code) => (
               <li
                 key={code.value}
                 className={`
-                  relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-blue-50
-                  ${selectedCode === code.value ? 'bg-blue-100 text-blue-900' : 'text-gray-900'}
+                  relative cursor-pointer select-none py-3 pl-4 pr-12 mx-2 rounded-lg transition-all duration-150
+                  hover:bg-primary-50 hover:text-primary-900
+                  ${selectedCode === code.value 
+                    ? 'bg-primary-100 text-primary-900 font-semibold' 
+                    : 'text-slate-900 hover:bg-slate-50'
+                  }
                 `}
                 onClick={() => {
                   onCodeSelect(code.value);
                   setIsOpen(false);
                 }}
               >
-                <span className={`block truncate ${selectedCode === code.value ? 'font-semibold' : 'font-normal'}`}>
-                  {code.label}
-                </span>
-                {selectedCode === code.value && (
-                  <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-blue-600">
-                    <Check className="h-5 w-5" />
-                  </span>
-                )}
+                <div className="flex items-start">
+                  <div className="flex-1">
+                    <span className="block text-sm leading-relaxed">
+                      {code.label}
+                    </span>
+                  </div>
+                  {selectedCode === code.value && (
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                      <div className="bg-primary-500 rounded-full p-1">
+                        <Check className="h-3 w-3 text-white" />
+                      </div>
+                    </div>
+                  )}
+                </div>
               </li>
             ))}
           </ul>

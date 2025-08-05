@@ -76,23 +76,33 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-primary-50/30">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white/95 backdrop-blur-sm shadow-soft border-b border-slate-200/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <FileText className="h-8 w-8 text-blue-600" />
-              <h1 className="text-2xl font-bold text-gray-900">
-                NYCT No-Writer MVP
-              </h1>
+          <div className="flex justify-between items-center py-6">
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary-600 to-accent-500 opacity-20 blur"></div>
+                <div className="relative bg-primary-500 p-2 rounded-lg">
+                  <FileText className="h-7 w-7 text-white" />
+                </div>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+                  NYCT No-Writer
+                </h1>
+                <p className="text-sm text-slate-600 font-medium">
+                  Intelligent Decline Rationale Generator
+                </p>
+              </div>
             </div>
             <button
               onClick={() => setShowMetrics(!showMetrics)}
-              className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="flex items-center space-x-2 px-4 py-2.5 text-sm font-medium text-slate-700 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-lg hover:bg-white hover:border-slate-300 hover:shadow-card transition-all duration-200"
             >
               <BarChart3 className="h-4 w-4" />
-              <span>Metrics</span>
+              <span>Analytics</span>
             </button>
           </div>
         </div>
@@ -100,7 +110,7 @@ function App() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {showMetrics && (
-          <div className="mb-8">
+          <div className="mb-8 animate-slide-up">
             <MetricsPanel />
           </div>
         )}
@@ -108,50 +118,80 @@ function App() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Input Panel */}
           <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Upload className="h-5 w-5 mr-2 text-blue-600" />
-                Upload Proposal
-              </h2>
+            {/* Step indicator for better UX flow */}
+            <div className="mb-6">
+              <div className="flex items-center space-x-2 text-sm text-slate-600">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                  Step-by-Step Process
+                </span>
+              </div>
+            </div>
+
+            {/* Step 1: Upload */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-card border border-slate-200/60 p-6 hover:shadow-elevated transition-all duration-300">
+              <div className="flex items-center mb-4">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-100 text-primary-600 text-sm font-semibold mr-3">
+                  1
+                </div>
+                <h2 className="text-lg font-semibold text-slate-900 flex items-center">
+                  <Upload className="h-5 w-5 mr-2 text-primary-600" />
+                  Upload Proposal
+                </h2>
+              </div>
               <FileUpload
                 onFileUploaded={setUploadedFile}
                 uploadedFile={uploadedFile}
               />
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <MessageSquare className="h-5 w-5 mr-2 text-blue-600" />
-                Decline Reason
-              </h2>
+            {/* Step 2: Reason */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-card border border-slate-200/60 p-6 hover:shadow-elevated transition-all duration-300">
+              <div className="flex items-center mb-4">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-100 text-primary-600 text-sm font-semibold mr-3">
+                  2
+                </div>
+                <h2 className="text-lg font-semibold text-slate-900 flex items-center">
+                  <MessageSquare className="h-5 w-5 mr-2 text-primary-600" />
+                  Select Decline Reason
+                </h2>
+              </div>
               <ReasonCodeSelector
                 selectedCode={selectedReasonCode}
                 onCodeSelect={setSelectedReasonCode}
               />
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Staff Note
-              </h2>
+            {/* Step 3: Staff Note */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-card border border-slate-200/60 p-6 hover:shadow-elevated transition-all duration-300">
+              <div className="flex items-center mb-4">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary-100 text-primary-600 text-sm font-semibold mr-3">
+                  3
+                </div>
+                <h2 className="text-lg font-semibold text-slate-900">
+                  Add Staff Note
+                </h2>
+              </div>
               <StaffNoteInput
                 value={staffNote}
                 onChange={setStaffNote}
               />
             </div>
 
-            <GenerateButton
-              onClick={handleGenerate}
-              isGenerating={isGenerating}
-              disabled={!uploadedFile || !selectedReasonCode || !staffNote.trim()}
-            />
+            {/* Generate Button */}
+            <div className="pt-4">
+              <GenerateButton
+                onClick={handleGenerate}
+                isGenerating={isGenerating}
+                disabled={!uploadedFile || !selectedReasonCode || !staffNote.trim()}
+              />
+            </div>
 
             {generatedOutput && (
               <button
                 onClick={resetForm}
-                className="w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                className="w-full px-4 py-3 text-sm font-medium text-slate-700 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-lg hover:bg-white hover:border-slate-300 hover:shadow-card transition-all duration-200"
               >
-                Start New Decline
+                Start New Decline Process
               </button>
             )}
           </div>
@@ -159,17 +199,34 @@ function App() {
           {/* Output Panel */}
           <div className="space-y-6">
             {generatedOutput ? (
-              <OutputPanel output={generatedOutput} />
+              <div className="animate-slide-up">
+                <OutputPanel output={generatedOutput} />
+              </div>
             ) : (
-              <div className="bg-white rounded-lg shadow-sm border p-6">
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl shadow-card border border-slate-200/60 p-8">
                 <div className="text-center py-12">
-                  <Zap className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  <div className="relative mb-6">
+                    <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-primary-600/20 to-accent-500/20 blur"></div>
+                    <div className="relative bg-gradient-to-r from-primary-100 to-accent-100 p-4 rounded-full w-fit mx-auto">
+                      <Zap className="h-8 w-8 text-primary-600" />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-3">
                     Ready to Generate
                   </h3>
-                  <p className="text-gray-500">
-                    Complete the form on the left and click "Generate" to create your decline rationale.
+                  <p className="text-slate-600 max-w-sm mx-auto leading-relaxed">
+                    Complete all three steps on the left and click "Generate" to create professional decline rationales in seconds.
                   </p>
+                  <div className="mt-6 flex items-center justify-center space-x-4 text-sm text-slate-500">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-primary-400 rounded-full mr-2"></div>
+                      <span>AI-powered</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-accent-400 rounded-full mr-2"></div>
+                      <span>Professional tone</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
