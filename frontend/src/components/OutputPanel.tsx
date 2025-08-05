@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Copy, Download, CheckCircle, Clock, FileText, Mail } from 'lucide-react';
-import { GeneratedOutput } from '../App';
+import type { GeneratedOutput } from '../App';
 
 interface OutputPanelProps {
   output: GeneratedOutput;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
-import { ReasonCode } from '../App';
+import type { ReasonCode } from '../App';
 import { API_URL } from '../config';
 
 interface ReasonCodeSelectorProps {

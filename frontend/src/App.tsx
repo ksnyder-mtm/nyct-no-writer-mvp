@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import FileUpload from './components/FileUpload';
 import ReasonCodeSelector from './components/ReasonCodeSelector';
 import StaffNoteInput from './components/StaffNoteInput';
