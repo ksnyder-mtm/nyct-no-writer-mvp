@@ -6,7 +6,6 @@ import GenerateButton from './components/GenerateButton';
 import OutputPanel from './components/OutputPanel';
 import MetricsPanel from './components/MetricsPanel';
 import { Upload, FileText, MessageSquare, Zap, BarChart3 } from 'lucide-react';
-import { API_URL } from './config';
 
 export interface ReasonCode {
   value: string;
@@ -42,24 +41,38 @@ function App() {
 
     setIsGenerating(true);
     try {
-      const response = await fetch(`${API_URL}/generate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          reason_code: selectedReasonCode,
-          staff_note: staffNote,
-          proposal_text: uploadedFile.text_content,
-        }),
-      });
+      // Simulate API call delay for realistic experience
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Generate mock rationale based on inputs
+      const mockOutput: GeneratedOutput = {
+        internal_rationale: `${selectedReasonCode.toUpperCase()} DECLINE RATIONALE
 
-      if (!response.ok) {
-        throw new Error('Failed to generate rationale');
-      }
+Based on our comprehensive review of the submitted proposal, we have determined that this request does not align with our current funding priorities for this cycle. ${staffNote}
 
-      const output: GeneratedOutput = await response.json();
-      setGeneratedOutput(output);
+The proposal requests funding for activities that fall within the "${selectedReasonCode}" category, which is outside our approved guidelines for this funding round. While the organization demonstrates commitment to their mission and community impact, the specific program design and implementation approach do not meet our established criteria for strategic impact and long-term sustainability.
+
+Our board has carefully considered this application alongside other proposals in this funding cycle. Given our limited resources and strategic priorities, we must focus on initiatives that directly align with our current funding framework and demonstrate the highest potential for measurable community impact.
+
+We appreciate the time and effort invested in preparing this comprehensive submission and encourage the organization to consider revising their approach to better align with our funding guidelines for future opportunities.`,
+
+        external_reply: `Dear Applicant,
+
+Thank you for your proposal submission to The New York Community Trust. We genuinely appreciate your organization's dedication to serving the community and the considerable time you invested in preparing your application.
+
+After careful review by our program team and board, we have determined that we will not be able to provide funding for this request at this time. This proposal falls under our "${selectedReasonCode.toLowerCase()}" category, which is not within our current funding priorities for this cycle.
+
+We recognize the important work your organization does and encourage you to review our updated funding guidelines on our website. We invite you to consider applying for future opportunities that may better align with your organization's mission and our strategic priorities.
+
+Thank you again for considering The New York Community Trust as a potential partner in your work.
+
+Best regards,
+NYCT Program Team`,
+
+        generation_time_ms: 3000
+      };
+
+      setGeneratedOutput(mockOutput);
     } catch (error) {
       console.error('Error generating rationale:', error);
       alert('Error generating rationale. Please try again.');

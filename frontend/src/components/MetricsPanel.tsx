@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, Clock, CheckCircle, Edit3, RefreshCw } from 'lucide-react';
-import { API_URL } from '../config';
 
 interface Metrics {
   avg_generation_time_ms: number;
@@ -20,11 +19,16 @@ const MetricsPanel: React.FC = () => {
   const fetchMetrics = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/metrics`);
-      if (response.ok) {
-        const data = await response.json();
-        setMetrics(data);
-      }
+      // Simulate API call delay for realistic experience
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Use mock metrics for demo (no backend needed)
+      setMetrics({
+        avg_generation_time_ms: 3500,
+        declines_cleared_this_week: 47,
+        total_processed: 234,
+        manual_edits_ratio: 0.23
+      });
     } catch (error) {
       console.error('Failed to fetch metrics:', error);
       // Fallback metrics for demo
