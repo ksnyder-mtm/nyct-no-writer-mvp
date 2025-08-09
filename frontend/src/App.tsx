@@ -33,6 +33,9 @@ function App() {
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [showMetrics, setShowMetrics] = useState<boolean>(false);
 
+  // Debug logging
+  console.log('App component loaded successfully');
+
   const handleGenerate = async () => {
     if (!uploadedFile || !selectedReasonCode || !staffNote.trim()) {
       alert('Please complete all fields before generating.');
@@ -116,6 +119,10 @@ NYCT Program Team`,
                 src="/mtm-logo.png" 
                 alt="Meet the Moment" 
                 className="h-[60px] w-auto"
+                onError={(e) => {
+                  console.error('Failed to load MTM logo');
+                  e.currentTarget.style.display = 'none';
+                }}
               />
               <div className="border-l-2 border-softblue-400 pl-4">
                 <h1 className="text-2xl font-bold text-navy-500">NYCT No-Writer</h1>
@@ -310,6 +317,10 @@ NYCT Program Team`,
           src="/mtm-logo.png" 
           alt="Meet the Moment" 
           className="h-10 mx-auto mb-2"
+          onError={(e) => {
+            console.error('Failed to load MTM footer logo');
+            e.currentTarget.style.display = 'none';
+          }}
         />
         <p className="text-gray-600 text-sm">Prototype by Meet the Moment</p>
       </footer>
