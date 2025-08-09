@@ -98,22 +98,22 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded, uploadedFile })
 
   if (uploadedFile) {
     return (
-      <div className="border-2 border-green-200 border-dashed rounded-lg p-4 bg-green-50">
+      <div className="border-2 border-accent-300 border-dashed rounded-lg p-4 bg-accent-50">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="bg-green-100 p-2 rounded-full">
-              <CheckCircle className="h-5 w-5 text-green-600" />
+            <div className="bg-accent-100 p-2 rounded-full">
+              <CheckCircle className="h-5 w-5 text-accent-600" />
             </div>
             <div>
-              <p className="font-medium text-green-900">{uploadedFile.filename}</p>
-              <p className="text-sm text-green-700">
+              <p className="font-medium text-navy-500">{uploadedFile.filename}</p>
+              <p className="text-sm text-gray-600">
                 {formatFileSize(uploadedFile.size)} • Ready for processing
               </p>
             </div>
           </div>
           <button
             onClick={clearFile}
-            className="p-2 text-green-600 hover:text-green-800 hover:bg-green-200 rounded-lg transition-colors"
+            className="p-2 text-accent-600 hover:text-accent-700 hover:bg-accent-100 rounded-md transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -128,8 +128,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded, uploadedFile })
         className={`
           border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all duration-200
           ${isDragOver
-            ? 'border-blue-400 bg-blue-50'
-            : 'border-slate-300 hover:border-slate-400 hover:bg-slate-50'
+            ? 'border-primary-400 bg-primary-50'
+            : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
           }
           ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}
         `}
@@ -149,28 +149,28 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded, uploadedFile })
         
         {isUploading ? (
           <div className="flex flex-col items-center space-y-3">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-slate-200 border-t-blue-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-200 border-t-primary-500"></div>
             <div>
-              <p className="text-slate-700 font-medium">Processing your document...</p>
-              <p className="text-sm text-slate-500">This may take a few seconds</p>
+              <p className="text-gray-900 font-medium">Processing your document...</p>
+              <p className="text-sm text-gray-600">This may take a few seconds</p>
             </div>
           </div>
         ) : (
           <div className="space-y-4">
             <div className={`p-3 rounded-full w-fit mx-auto ${
-              isDragOver ? 'bg-blue-100' : 'bg-slate-100'
+              isDragOver ? 'bg-primary-100' : 'bg-softblue-100'
             }`}>
               <Upload className={`h-8 w-8 ${
-                isDragOver ? 'text-blue-600' : 'text-slate-500'
+                isDragOver ? 'text-primary-600' : 'text-softblue-400'
               }`} />
             </div>
             <div>
-              <p className="font-semibold text-slate-900">
+              <p className="font-semibold text-navy-500">
                 Drop your proposal here
               </p>
-              <p className="text-slate-600 text-sm">or click to browse files</p>
+              <p className="text-gray-600 text-sm">or click to browse files</p>
             </div>
-            <div className="flex items-center justify-center space-x-4 text-xs text-slate-500">
+            <div className="flex items-center justify-center space-x-4 text-xs text-gray-600">
               <span>PDF</span>
               <span>•</span>
               <span>Word</span>
@@ -182,7 +182,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUploaded, uploadedFile })
       </div>
 
       {error && (
-        <div className="flex items-center space-x-2 text-red-700 bg-red-50 p-3 rounded-lg border border-red-200">
+        <div className="flex items-center space-x-2 text-error-600 bg-error-50 p-3 rounded-lg border border-error-100">
           <AlertCircle className="h-4 w-4" />
           <span className="text-sm">{error}</span>
         </div>

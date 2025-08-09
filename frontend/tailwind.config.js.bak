@@ -1,0 +1,146 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        // MTM Brand Colors
+        primary: {
+          50: '#e6f7fb',
+          100: '#cceff7',
+          200: '#99dfef',
+          300: '#66cfe7',
+          400: '#33bfdf',
+          500: '#1ab1d2',  // MTM Light Blue
+          600: '#15a0bc',
+          700: '#118da8',
+          800: '#0d6a7f',
+          900: '#094856',
+          950: '#05252d',
+        },
+        // MTM Orange accent
+        accent: {
+          50: '#fef5ee',
+          100: '#fde6d3',
+          200: '#fbcaa5',
+          300: '#f9a86d',
+          400: '#f68842',
+          500: '#f18f38',  // MTM Orange
+          600: '#de6918',
+          700: '#b94f0f',
+          800: '#943f11',
+          900: '#793611',
+          950: '#411906',
+        },
+        // MTM Navy
+        navy: {
+          50: '#e8f0f7',
+          100: '#d1e1ef',
+          200: '#a3c3df',
+          300: '#75a5cf',
+          400: '#4787bf',
+          500: '#1c487b',  // MTM Navy
+          600: '#163a62',
+          700: '#112c4a',
+          800: '#0c1e31',
+          900: '#061019',
+          950: '#03080c',
+        },
+        // MTM Soft Blue
+        softblue: {
+          50: '#f0f5f8',
+          100: '#e1ebf1',
+          200: '#c3d6e2',
+          300: '#a5c2d4',
+          400: '#85abbd',  // MTM Soft Blue
+          500: '#6b93a8',
+          600: '#567b93',
+          700: '#42637e',
+          800: '#2e4b69',
+          900: '#1a3354',
+          950: '#0d1a2a',
+        },
+        // MTM Backgrounds
+        cream: '#fef4e3',
+        bgwhite: '#fafdfe',
+        // Override default gray for better text colors
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb',
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#6b7280',
+          600: '#4b5563',
+          700: '#374151',
+          800: '#1f2937',
+          900: '#333333',  // MTM body text color
+          950: '#0f172a',
+        },
+        // Keep existing status colors
+        success: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+        },
+        warning: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          500: '#f59e0b',
+          600: '#d97706',
+        },
+        error: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          500: '#ef4444',
+          600: '#dc2626',
+        }
+      },
+      fontFamily: {
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+      },
+      fontSize: {
+        '2xs': ['0.625rem', { lineHeight: '0.75rem' }],
+        'xs': ['0.75rem', { lineHeight: '1rem' }],
+        'sm': ['0.875rem', { lineHeight: '1.25rem' }],
+        'base': ['1rem', { lineHeight: '1.6' }],  // MTM body line height
+        'lg': ['1.125rem', { lineHeight: '1.75rem' }],
+        'xl': ['1.25rem', { lineHeight: '1.75rem' }],
+        '2xl': ['1.5rem', { lineHeight: '2rem' }],  // 24px = H3
+        '3xl': ['2rem', { lineHeight: '2.5rem' }],   // 32px = H2
+        '4xl': ['2.5rem', { lineHeight: '3rem' }],    // 40px = H1
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+      },
+      boxShadow: {
+        'soft': '0 2px 4px rgba(0, 0, 0, 0.08)',  // MTM card shadow
+        'card': '0 2px 4px rgba(0, 0, 0, 0.08)',
+        'elevated': '0 4px 8px rgba(0, 0, 0, 0.12)',
+      },
+      animation: {
+        'slide-up': 'slideUp 0.3s ease-out',
+        'fade-in': 'fadeIn 0.2s ease-out',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        slideUp: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
+    },
+  },
+  plugins: [],
+}

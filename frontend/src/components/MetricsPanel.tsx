@@ -54,10 +54,10 @@ const MetricsPanel: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border p-6">
+      <div className="bg-white rounded-lg shadow-card border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Usage Metrics</h3>
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+          <h3 className="text-lg font-semibold text-navy-500">Usage Metrics</h3>
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-500"></div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
@@ -72,8 +72,8 @@ const MetricsPanel: React.FC = () => {
 
   if (!metrics) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <div className="text-center text-gray-500">
+      <div className="bg-white rounded-lg shadow-card border border-gray-200 p-6">
+        <div className="text-center text-gray-600">
           Failed to load metrics
         </div>
       </div>
@@ -122,20 +122,20 @@ const MetricsPanel: React.FC = () => {
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-elevated border border-slate-200/60 p-6">
+    <div className="bg-white rounded-lg shadow-card border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center space-x-3">
           <div className="bg-gradient-to-r from-primary-100 to-accent-100 p-2 rounded-lg">
             <TrendingUp className="h-5 w-5 text-primary-600" />
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-slate-900">Usage Analytics</h3>
-            <p className="text-sm text-slate-600">Performance insights and trends</p>
+            <h3 className="text-xl font-semibold text-navy-500">📊 Usage Analytics</h3>
+            <p className="text-sm text-gray-600">Performance insights and trends</p>
           </div>
         </div>
         <button
           onClick={fetchMetrics}
-          className="inline-flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-200 hover:scale-105"
+          className="inline-flex items-center space-x-2 px-4 py-2 text-sm font-medium text-navy-500 hover:text-navy-600 bg-softblue-100 hover:bg-softblue-200 rounded-md transition-all duration-200"
         >
           <RefreshCw className="h-4 w-4" />
           <span>Refresh Data</span>
@@ -146,18 +146,18 @@ const MetricsPanel: React.FC = () => {
         {metricCards.map((metric, index) => {
           const IconComponent = metric.icon;
           return (
-            <div key={index} className="relative overflow-hidden rounded-xl border border-slate-200 p-6 bg-gradient-to-br from-white to-slate-50/50 hover:shadow-card transition-all duration-300 group">
+            <div key={index} className="relative overflow-hidden rounded-lg border border-gray-200 p-6 bg-white hover:shadow-elevated transition-all duration-300 group">
               <div className="flex items-start justify-between mb-4">
                 <div className={`rounded-xl p-3 ${getColorClasses(metric.color)} group-hover:scale-110 transition-transform duration-300`}>
                   <IconComponent className="h-6 w-6" />
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-slate-900 mb-1">{metric.value}</p>
-                  <p className="text-xs font-medium text-slate-600">{metric.title}</p>
+                  <p className="text-2xl font-bold text-navy-500 mb-1">{metric.value}</p>
+                  <p className="text-xs font-medium text-gray-600">{metric.title}</p>
                 </div>
               </div>
-              <div className="border-t border-slate-100 pt-3">
-                <p className="text-xs text-slate-500 leading-relaxed">{metric.description}</p>
+              <div className="border-t border-gray-100 pt-3">
+                <p className="text-xs text-gray-600 leading-relaxed">{metric.description}</p>
               </div>
               
               {/* Subtle background pattern */}
@@ -169,14 +169,14 @@ const MetricsPanel: React.FC = () => {
         })}
       </div>
 
-      <div className="mt-8 bg-gradient-to-r from-primary-50/50 to-accent-50/50 border border-primary-100 rounded-xl p-4">
+      <div className="mt-8 bg-gradient-to-r from-primary-50/50 to-accent-50/50 border border-primary-200 rounded-lg p-4">
         <div className="flex items-start space-x-3">
           <div className="bg-primary-100 p-2 rounded-lg flex-shrink-0">
             <div className="w-4 h-4 bg-primary-500 rounded-full"></div>
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 mb-1">Success Target</h4>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <h4 className="text-sm font-semibold text-navy-500 mb-1">🎯 Success Target</h4>
+            <p className="text-xs text-gray-600 leading-relaxed">
               Reduce average time-to-rationale per decline from multiple weeks to under 15 minutes within the pilot team, while maintaining quality and consistency in communication.
             </p>
           </div>

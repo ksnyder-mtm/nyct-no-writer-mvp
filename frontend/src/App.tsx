@@ -106,23 +106,25 @@ NYCT Program Team`,
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Simplified Header */}
-      <header className="bg-white shadow-sm border-b sticky top-0 z-40">
+    <div className="min-h-screen bg-bgwhite flex flex-col">
+      {/* MTM Header */}
+      <header className="bg-cream shadow-sm border-b sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-4 sm:py-6 space-y-3 sm:space-y-0">
-            <div className="flex items-center space-x-3">
-              <div className="bg-blue-600 p-2 rounded-lg">
-                <FileText className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900">NYCT No-Writer</h1>
-                <p className="text-slate-600 text-sm">AI-Powered Proposal Review Assistant</p>
+            <div className="flex items-center space-x-4">
+              <img 
+                src="/mtm-logo.png" 
+                alt="Meet the Moment" 
+                className="h-[60px] w-auto"
+              />
+              <div className="border-l-2 border-softblue-400 pl-4">
+                <h1 className="text-2xl font-bold text-navy-500">NYCT No-Writer</h1>
+                <p className="text-gray-600 text-sm">AI-Powered Proposal Review Assistant</p>
               </div>
             </div>
             <button
               onClick={() => setShowMetrics(!showMetrics)}
-              className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-navy-500 bg-softblue-100 rounded-md hover:bg-softblue-200 transition-colors"
             >
               <BarChart3 className="h-4 w-4" />
               <span>Analytics</span>
@@ -131,7 +133,7 @@ NYCT Program Team`,
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-grow">
         {/* Step Progress Indicator */}
         <div className="mb-6 sm:mb-8" role="navigation" aria-label="Progress indicator">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
@@ -149,10 +151,10 @@ NYCT Program Team`,
                 <div 
                   className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-200 flex-shrink-0 ${
                     step.completed 
-                      ? 'bg-green-100 border-green-500 text-green-600'
+                      ? 'bg-accent-100 border-accent-500 text-accent-600'
                       : progressStep === step.id
-                      ? 'bg-blue-100 border-blue-500 text-blue-600'
-                      : 'bg-slate-100 border-slate-300 text-slate-400'
+                      ? 'bg-primary-100 border-primary-500 text-primary-600'
+                      : 'bg-softblue-100 border-softblue-400 text-softblue-500'
                   }`}
                   role="progressbar"
                   aria-valuenow={step.completed ? 100 : progressStep === step.id ? 50 : 0}
@@ -168,7 +170,7 @@ NYCT Program Team`,
                 </div>
                 {index < steps.length - 1 && (
                   <div className={`flex-1 h-0.5 mx-1 sm:mx-2 transition-colors duration-200 min-w-4 ${
-                    step.completed ? 'bg-green-500' : 'bg-slate-300'
+                    step.completed ? 'bg-accent-500' : 'bg-gray-300'
                   }`} />
                 )}
               </div>
@@ -176,10 +178,10 @@ NYCT Program Team`,
           </div>
 
           <div className="text-center">
-            <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">
+            <h3 className="text-lg sm:text-xl font-bold text-navy-500 mb-2">
               {progressStep <= 4 ? steps[progressStep - 1].title : 'Complete'}
             </h3>
-            <p className="text-sm sm:text-base text-slate-600">
+            <p className="text-sm sm:text-base text-gray-600">
               {progressStep === 1 && 'Upload your proposal document to get started'}
               {progressStep === 2 && 'Select the reason for declining this proposal'}
               {progressStep === 3 && 'Add context notes to personalize the response'}
@@ -200,15 +202,15 @@ NYCT Program Team`,
           {/* Step 1: Upload */}
           {progressStep >= 1 && (
             <section 
-              className={`bg-white rounded-xl shadow-sm border p-4 sm:p-6 transition-all duration-300 ${
-                progressStep === 1 ? 'ring-2 ring-blue-500 ring-opacity-20' : ''
+              className={`bg-white rounded-lg shadow-card border border-gray-200 p-4 sm:p-6 transition-all duration-300 ${
+                progressStep === 1 ? 'ring-2 ring-primary-500 ring-opacity-20' : ''
               }`}
               aria-labelledby="upload-heading"
             >
               <div className="flex items-center mb-4">
-                <Upload className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                <h3 id="upload-heading" className="text-base sm:text-lg font-semibold text-slate-900">Upload Proposal Document</h3>
-                {uploadedFile && <CheckCircle2 className="h-5 w-5 text-green-600 ml-auto flex-shrink-0" />}
+                <Upload className="h-5 w-5 text-primary-500 mr-2 flex-shrink-0" />
+                <h3 id="upload-heading" className="text-base sm:text-lg font-semibold text-navy-500">Upload Proposal Document</h3>
+                {uploadedFile && <CheckCircle2 className="h-5 w-5 text-accent-500 ml-auto flex-shrink-0" />}
               </div>
               <FileUpload
                 onFileUploaded={setUploadedFile}
@@ -220,15 +222,15 @@ NYCT Program Team`,
           {/* Step 2: Reason */}
           {progressStep >= 2 && (
             <section 
-              className={`bg-white rounded-xl shadow-sm border p-4 sm:p-6 transition-all duration-300 ${
-                progressStep === 2 ? 'ring-2 ring-blue-500 ring-opacity-20' : ''
+              className={`bg-white rounded-lg shadow-card border border-gray-200 p-4 sm:p-6 transition-all duration-300 ${
+                progressStep === 2 ? 'ring-2 ring-primary-500 ring-opacity-20' : ''
               }`}
               aria-labelledby="reason-heading"
             >
               <div className="flex items-center mb-4">
-                <MessageSquare className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                <h3 id="reason-heading" className="text-base sm:text-lg font-semibold text-slate-900">Select Decline Reason</h3>
-                {selectedReasonCode && <CheckCircle2 className="h-5 w-5 text-green-600 ml-auto flex-shrink-0" />}
+                <MessageSquare className="h-5 w-5 text-primary-500 mr-2 flex-shrink-0" />
+                <h3 id="reason-heading" className="text-base sm:text-lg font-semibold text-navy-500">Select Decline Reason</h3>
+                {selectedReasonCode && <CheckCircle2 className="h-5 w-5 text-accent-500 ml-auto flex-shrink-0" />}
               </div>
               <ReasonCodeSelector
                 selectedCode={selectedReasonCode}
@@ -240,15 +242,15 @@ NYCT Program Team`,
           {/* Step 3: Staff Notes */}
           {progressStep >= 3 && (
             <section 
-              className={`bg-white rounded-xl shadow-sm border p-4 sm:p-6 transition-all duration-300 ${
-                progressStep === 3 ? 'ring-2 ring-blue-500 ring-opacity-20' : ''
+              className={`bg-white rounded-lg shadow-card border border-gray-200 p-4 sm:p-6 transition-all duration-300 ${
+                progressStep === 3 ? 'ring-2 ring-primary-500 ring-opacity-20' : ''
               }`}
               aria-labelledby="notes-heading"
             >
               <div className="flex items-center mb-4">
-                <FileText className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                <h3 id="notes-heading" className="text-base sm:text-lg font-semibold text-slate-900">Staff Context Notes</h3>
-                {staffNote.trim() && <CheckCircle2 className="h-5 w-5 text-green-600 ml-auto flex-shrink-0" />}
+                <FileText className="h-5 w-5 text-primary-500 mr-2 flex-shrink-0" />
+                <h3 id="notes-heading" className="text-base sm:text-lg font-semibold text-navy-500">Staff Context Notes</h3>
+                {staffNote.trim() && <CheckCircle2 className="h-5 w-5 text-accent-500 ml-auto flex-shrink-0" />}
               </div>
               <StaffNoteInput
                 value={staffNote}
@@ -260,14 +262,14 @@ NYCT Program Team`,
           {/* Step 4: Generate */}
           {progressStep >= 4 && (
             <section 
-              className={`bg-white rounded-xl shadow-sm border p-4 sm:p-6 transition-all duration-300 ${
-                progressStep === 4 ? 'ring-2 ring-blue-500 ring-opacity-20' : ''
+              className={`bg-white rounded-lg shadow-card border border-gray-200 p-4 sm:p-6 transition-all duration-300 ${
+                progressStep === 4 ? 'ring-2 ring-primary-500 ring-opacity-20' : ''
               }`}
               aria-labelledby="generate-heading"
             >
               <div className="flex items-center mb-6">
-                <Zap className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                <h3 id="generate-heading" className="text-base sm:text-lg font-semibold text-slate-900">Generate Rationale</h3>
+                <Zap className="h-5 w-5 text-primary-500 mr-2 flex-shrink-0" />
+                <h3 id="generate-heading" className="text-base sm:text-lg font-semibold text-navy-500">Generate Rationale</h3>
               </div>
               <GenerateButton
                 onClick={handleGenerate}
@@ -280,17 +282,17 @@ NYCT Program Team`,
           {/* Output */}
           {generatedOutput && (
             <section 
-              className="bg-white rounded-xl shadow-sm border p-4 sm:p-6"
+              className="bg-white rounded-lg shadow-card border border-gray-200 p-4 sm:p-6"
               aria-labelledby="output-heading"
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
                 <div className="flex items-center">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mr-2 flex-shrink-0" />
-                  <h3 id="output-heading" className="text-base sm:text-lg font-semibold text-slate-900">Generated Rationale</h3>
+                  <CheckCircle2 className="h-5 w-5 text-accent-500 mr-2 flex-shrink-0" />
+                  <h3 id="output-heading" className="text-base sm:text-lg font-semibold text-navy-500">Generated Rationale</h3>
                 </div>
                 <button
                   onClick={resetForm}
-                  className="flex items-center justify-center space-x-2 px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors min-h-[44px]"
+                  className="flex items-center justify-center space-x-2 px-4 py-2 text-sm font-medium text-navy-500 bg-softblue-100 rounded-md hover:bg-softblue-200 transition-colors min-h-[44px]"
                   aria-label="Start a new decline process"
                 >
                   <ArrowRight className="h-4 w-4" />
@@ -302,6 +304,15 @@ NYCT Program Team`,
           )}
         </div>
       </main>
+      {/* MTM Footer */}
+      <footer className="bg-cream text-center py-6 px-4 mt-12">
+        <img 
+          src="/mtm-logo.png" 
+          alt="Meet the Moment" 
+          className="h-10 mx-auto mb-2"
+        />
+        <p className="text-gray-600 text-sm">Prototype by Meet the Moment</p>
+      </footer>
     </div>
   );
 }

@@ -13,11 +13,11 @@ const GenerateButton: React.FC<GenerateButtonProps> = ({ onClick, isGenerating, 
       onClick={onClick}
       disabled={disabled || isGenerating}
       className={`
-        w-full flex items-center justify-center space-x-3 px-6 py-4 rounded-lg font-semibold
+        w-full flex items-center justify-center space-x-3 px-6 py-3 rounded-md font-semibold
         transition-all duration-200 transform
         ${disabled || isGenerating
-          ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-          : 'bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98] shadow-sm hover:shadow-md'
+          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          : 'bg-primary-500 text-white hover:bg-primary-600 active:scale-[0.98] shadow-soft hover:shadow-elevated'
         }
       `}
     >

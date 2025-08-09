@@ -47,7 +47,7 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
   if (loading) {
     return (
       <div className="animate-pulse">
-        <div className="h-12 bg-slate-200 rounded-lg"></div>
+        <div className="h-12 bg-gray-200 rounded-lg"></div>
       </div>
     );
   }
@@ -69,23 +69,23 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
         aria-haspopup="listbox"
         aria-label="Select decline reason"
         className={`
-          relative w-full cursor-pointer rounded-lg border bg-white/80 backdrop-blur-sm py-3.5 pl-4 pr-12 text-left shadow-card transition-all duration-200
+          relative w-full cursor-pointer rounded border bg-white py-3.5 pl-4 pr-12 text-left shadow-card transition-all duration-200
           focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 hover:shadow-elevated hover:bg-white
-          ${selectedCode ? 'border-slate-300' : 'border-warning-300 bg-warning-50/50'}
+          ${selectedCode ? 'border-gray-300' : 'border-warning-300 bg-warning-50/50'}
         `}
       >
         <span className="block truncate">
           {selectedReasonCode ? (
-            <span className="text-slate-900 font-medium">
+            <span className="text-gray-900 font-medium">
               {selectedReasonCode.label}
             </span>
           ) : (
-            <span className="text-slate-500 font-medium">Select a decline reason...</span>
+            <span className="text-gray-600 font-medium">Select a decline reason...</span>
           )}
         </span>
         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
           <ChevronDown
-            className={`h-5 w-5 text-slate-400 transition-all duration-200 ${
+            className={`h-5 w-5 text-softblue-400 transition-all duration-200 ${
               isOpen ? 'rotate-180 text-primary-500' : ''
             }`}
           />
@@ -99,11 +99,11 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
             className="fixed inset-0 z-10" 
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute z-20 mt-2 w-full rounded-xl bg-white/95 backdrop-blur-sm shadow-elevated border border-slate-200 animate-slide-up">
+          <div className="absolute z-20 mt-2 w-full rounded-lg bg-white shadow-elevated border border-gray-200 animate-slide-up">
             <ul 
               role="listbox" 
               aria-label="Decline reason options"
-              className="max-h-64 overflow-auto rounded-xl py-2 text-base focus:outline-none"
+              className="max-h-64 overflow-auto rounded-lg py-2 text-base focus:outline-none"
             >
             {reasonCodes.map((code) => (
               <li
@@ -116,7 +116,7 @@ const ReasonCodeSelector: React.FC<ReasonCodeSelectorProps> = ({ selectedCode, o
                   hover:bg-primary-50 hover:text-primary-900 focus:bg-primary-50 focus:text-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500/20
                   ${selectedCode === code.value 
                     ? 'bg-primary-100 text-primary-900 font-semibold' 
-                    : 'text-slate-900 hover:bg-slate-50'
+                    : 'text-gray-900 hover:bg-gray-50'
                   }
                 `}
                 onClick={() => {
